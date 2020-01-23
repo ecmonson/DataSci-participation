@@ -1,0 +1,41 @@
+---
+title: "R Markdown Exploration"
+author: "Eric C. Monson"
+date: Last updated `r format(Sys.time(), "%d %B, %Y")` 
+output: 
+  html_document:
+    theme: cerulean
+    toc: TRUE
+---
+
+
+```{r}
+# install.packages('gapminder')
+# install.packages('DT')
+# install.packages('tibble')
+```
+
+```{r}
+library('gapminder')
+library('DT')
+library('tibble')
+```
+gapminder
+```{r gapminder view, echo=FALSE}
+gapminder
+```
+
+mtcars is a dataset describing the features of automobiles from an old magazine. It is a data set with 32 observations on 11 (numeric) variables.
+```{r mtcars view, echo=FALSE}
+mtcars
+mean(mtcars[['mpg']])
+mtcars['mpg']
+mtcars[['mpg']]
+mtcars$mpg
+
+mean(mtcars$mpg)
+mtcars$cyl
+mean(mtcars$cyl)
+unique(mtcars$cyl)
+```
+
