@@ -1,8 +1,8 @@
-My participation repository
-https://github.com/ecmonson/DataSci-participation/
+My participation *repository* is:
+[This link](https://github.com/ecmonson/DataSci-participation/)
 
-My personal github account
-https://github.com/ecmonson
+My personal *github account* is:
+[This other link](https://github.com/ecmonson)
 
-Homepage for Data Science and Programming 
-https://wiernik-datasci.netlify.com/
+Find the **homepage** for *Data Science and Programming*: 
+[Here](https://wiernik-datasci.netlify.com/)
