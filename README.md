@@ -1,4 +1,4 @@
-## DataSci-participation
+# DataSci-participation
 
 ---
 
@@ -6,7 +6,7 @@
 
 <p>&nbsp;</p>
 
-### **Learning Checklist!**
+## **Learning Checklist!**
 
 ---
 - [x] Github introduction
