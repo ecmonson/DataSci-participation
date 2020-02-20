@@ -1,0 +1,49 @@
+---
+title: "in_class_2-13-20"
+output: 
+  html_document:
+    keep_md: true
+    theme: paper
+---
+
+```{r allow errors, echo = FALSE}
+knitr::opts_chunk$set(error = TRUE)
+```
+
+```{r}
+iris %>% 
+  summarize_if(is.numeric, funs(mean = mean, sd = sd))
+```
+```{r}
+library(gapminder)
+
+gapminder %>% 
+  group_by(continent, year) %>% 
+  summarize(mu    = mean(lifeExp),
+            sigma = sd(lifeExp))
+
+# different order:
+gapminder %>% 
+  group_by(year, continent) %>% 
+  summarize(mu    = mean(lifeExp),
+            sigma = sd(lifeExp))
+
+gapminder %>% 
+  group_by(country) %>% 
+  transmute(n = length(country))
+
+gapminder %>% 
+  group_by(continent) %>% 
+  summarize(n_countries = n_distinct(country),
+            mean_life_expectancy = mean(lifeExp))
+
+gap_inc <- gapminder %>% 
+  arrange(year) %>% 
+  group_by(country) %>% 
+  mutate(gdpPercap_inc = gdpPercap - lag(gdpPercap)) %>% arrange(country)
+print(gap_inc)
+
+gap_inc %>% 
+  tidyr::drop_na()
+```
+

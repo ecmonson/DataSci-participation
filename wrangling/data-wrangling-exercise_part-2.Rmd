@@ -134,6 +134,7 @@ Let's do some practice with grouping (and ungrouping) and summarizing data frame
    (c) Arrange by min life expectancy.
 
 ```{r}
+library(gapminder)
 gapminder %>% 
   group_by(continent, year) %>% 
   summarize(min_life = min(lifeExp))
@@ -201,13 +202,13 @@ psych::bfi %>%
 
 3. Let's use `psych::bfi` and make a new data frame that has
    (1) each participant's educational level (convert it to a categorical variable
-   using `factor*()`) and the mean score for each of the Big Five scales for each 
+   using `factor()`) and the mean score for each of the Big Five scales for each 
    participant. Store this data frame as a new object.
    
 ```{r}
-FILL_THIS_IN <-
-  psych::bfi %>% 
-  FILL_THIS_IN(FILL_THIS_IN)
+psych::bfi
+edu_level <-
+  psych::bfi 
 ```
 
 4. Use the data from Task 3 to summarize the distributions of Big Five scores 
