@@ -10,11 +10,6 @@ output:
 library(tidyverse)
 ```
 
-```{r}
-haire
-```
-
-
 ```{r, warning = FALSE, message = FALSE}
 lotr  <- read_csv("https://raw.githubusercontent.com/jennybc/lotr-tidy/master/data/lotr_tidy.csv")
 guest <- read_csv("https://raw.githubusercontent.com/USF-Psych-DataSci/Classroom/master/data/wedding/attend.csv")
@@ -38,24 +33,24 @@ lotr
 
 1. Would you say this data is in tidy format?
 
-   <!-- Describe why or why not in this space. -->
+   This data is consolidated across columns in a way that makes it hard to extrapolate specifics for analysis based on variable
 
 2. Widen the data so that we see the words spoken by each race, by putting race as its own column.
 
 ```{r}
 (lotr_wide <- lotr %>% 
-  pivot_wider(FILL_THIS_IN = c(-Race, -Words), 
-              FILL_THIS_IN = Race, 
-              FILL_THIS_IN = Words))
+  pivot_wider(id_cols = c(-Race, -Words), 
+              names_from = Race, 
+              values_from = Words))
 ```
 
 3. Re-lengthen the wide LOTR data from Question 2 above.
 
 ```{r}
 lotr_wide %>% 
-  pivot_longer(FILL_THIS_IN = FILL_THIS_IN, 
-               names_to  = FILL_THIS_IN, 
-               values_to = FILL_THIS_IN)
+  pivot_longer(cols = c(Elf, Hobbit, Man), 
+               names_to  = "Race", 
+               values_to = "Words")
 ```
 
 
@@ -75,9 +70,9 @@ guest %>%
 
 ```{r}
 (guest_long <- guest %>% 
-  pivot_longer(cols      = FILL_THIS_IN, 
-               names_to  = FILL_THIS_IN,
-               FILL_THIS_IN))
+  pivot_longer(cols      = c(-party, -name), 
+               names_to  = c(".value", "event" ),
+               names_sep = "_"))
 ```
 
 2. Use `tidyr::separate()` to split the name into two columns: "first" and 
@@ -85,14 +80,14 @@ guest %>%
 
 ```{r}
 guest_long %>% 
-  separate(FILL_THIS_IN, into = FILL_THIS_IN)
-  # unite(col = "name", FILL_THIS_IN, sep = FILL_THIS_IN)
+  separate(col = name, into = c("first", "last")) %>% 
+  unite(col = "name", first, last, sep = " ")
 ```
 
 3. Which parties still have a "PENDING" status for all members and all events?
 
 ```{r}
-FILL_THIS_IN %>% 
+guest_long %>% 
   group_by(party) %>% 
   summarize(all_pending = all(attendance == "PENDING"))
 ```
@@ -100,9 +95,9 @@ FILL_THIS_IN %>%
 4. Which parties still have a "PENDING" status for all members for the wedding?
 
 ```{r}
-FILL_THIS_IN %>% 
+guest_long %>% 
   group_by(party) %>% 
-  summarize(pending_wedding = all(FILL_THIS_IN == "PENDING"))
+  summarize(pending_wedding = all(event == "PENDING"))
 ```
 
 
@@ -110,10 +105,10 @@ FILL_THIS_IN %>%
 
 ```{r}
 guest_long %>% 
-  pivot_wider(id_cols     = FILL_THIS_IN, 
-              names_from  = FILL_THIS_IN, 
+  pivot_wider(id_cols     = c(party, name), 
+              names_from  = c(event), 
               names_sep   = "_", 
-              values_from = FILL_THIS_IN)
+              values_from = c(meal, attendance))
 ```
 
 6. You also have a list of emails for each party, in this worksheet under the 
@@ -122,7 +117,7 @@ guest_long %>%
 
 ```{r}
 email %>% 
-  separate_rows(FILL_THIS_IN, sep = FILL_THIS_IN)
+  separate_rows("guest", sep = " ")
 ```
 
 
