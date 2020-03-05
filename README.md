@@ -14,9 +14,9 @@
 - [x] Authoring
 - [x] *dplyr*
 - [x] *ggplot2*
-- [ ] Wrangling data
-- [ ] Factors
-- [ ] Plotting
+- [x] Wrangling data
+- [x] Factors
+- [x] Plotting
 - [ ] Model fitting
 - [ ] Simulating data
 - [ ] Peculiar data structures
