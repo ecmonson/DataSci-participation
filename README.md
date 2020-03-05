@@ -12,8 +12,8 @@
 - [x] Github introduction
 - [x] Introduction to R
 - [x] Authoring
-- [ ] *dplyr*
-- [ ] *ggplot2*
+- [x] *dplyr*
+- [x] *ggplot2*
 - [ ] Wrangling data
 - [ ] Factors
 - [ ] Plotting

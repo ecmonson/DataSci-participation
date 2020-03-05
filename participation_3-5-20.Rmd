@@ -1,0 +1,150 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# install.packages("here")
+```
+
+
+```{r}
+library(gapminder)
+library(tidyverse)
+```
+
+```{r}
+getwd()
+
+# here::here designates what file to work back from, not having to reference a working directory as you would with file.path():
+
+(gap_asia_2007 <- gapminder %>% filter(year == 2007, continent == "Asia"))
+
+write_csv(gap_asia_2007, here::here("data", "s008_data", "exported_file.csv"))
+```
+
+``` {r}
+imported_data <- read_csv(here::here("data", "s008_data", "exported_file.csv"))
+
+imported_data 
+```
+
+```{r}
+? read_csv()
+
+# to specify values to print as na, include a vector selecting all posible options or values to specify NA on import:
+read_csv(here::here("data", "s008_data", "exported_file.csv"), na = c("", "NA", "<N/A>", "-999"))
+```
+
+```{r}
+url <- "http://gattonweb.uky.edu/sheather/book/docs/datasets/magazines.csv"
+
+read_csv(url)
+
+
+# You can do this in one step if you like:
+# read_csv("http://gattonweb.uky.edu/sheather/book/docs/datasets/magazines.csv")
+# (This doesn’t work for all import functions, so I usually keep them separate as two steps.)
+
+
+library(readxl) 
+
+# "recursive" function allows for the creation of new files and directories as you go:
+dir.create(here::here("data", "s008_data"), recursive = TRUE)
+
+# Example of this implementation:
+# Download file:
+xls_url <- "http://gattonweb.uky.edu/sheather/book/docs/datasets/GreatestGivers.xls"
+# Download to a specific path:
+download.file(xls_url, here::here("data", "s008_data", "some_file.xls"), mode = "wb")
+
+# This is fine for sake of example, but in future instances use something more descriptive than "xls_url" or "url"
+
+# In file name creation, break up sile names with hyphens and underscores... NOT SPACES. Spaces render in html as %20, which becomes really not nice to deal with.
+# depression-ice-cream_dataset_2020.csv
+# or
+# DepressionIceCreamDataset2020.csv
+# not
+# depression ice cream 2020.csv
+
+# To extract the filename from the URL, you can use:
+file_name <- basename(xls_url)
+download.file(xls_url, here::here("data", "s008_data", file_name), mode = "wb")
+# Which can then be imported as:
+read_excel(here::here("data", "s008_data", file_name))
+```
+
+```{r}
+# install.packages("ggthemes")
+# install.packages("scales")
+# install.packages("tsibble")
+# install.packages("svglite")
+library(ggthemes)
+library(ggplot2)
+library(svglite)
+# Read in a sample SPSS file
+library(haven)
+
+(clevel <- haven::read_spss(here::here("data", "s008_data", "clevel.sav")))
+
+# Notice that this tibble looks a little different for the 'language' and 'gender' variables than normal. It has labels for the numeric values. This format is what SPSS uses, but it’s not standard for R. Let’s convert those variables, and "isClevel" as well, to factors:
+clevel_cleaned <-
+  clevel %>% 
+  mutate(language = as_factor(language),
+         gender = as_factor(gender),
+         isClevel = factor(isClevel, 
+                           levels = c(0, 1), 
+                           labels = c("No", "Yes"))
+  ) %>% 
+  print()
+
+# Alternatively this can all be piped together as:
+# clevel_cleaned <-
+#  (haven::read_spss(here::here("data", "s008_data", "clevel.sav"))) %>% 
+#  mutate(language = as_factor(language),
+#         gender = as_factor(gender),
+#         isClevel = factor(isClevel, 
+#                           levels = c(0, 1), 
+#                           labels = c("No", "Yes"))
+#  ) %>% 
+#  print()
+
+# To save this file as a CSV file as a smaller file that's easier to import in the future without having to access the other clevel file, we use "write_csv":
+write_csv(clevel_cleaned, here::here("data", "s008_data", "clevel_cleaned.csv"))
+
+# To make a plot, and then save this specific plot as well:
+clevel_plot <-
+  clevel_cleaned %>% 
+  mutate(isClevel = recode(isClevel, 
+                           No = "Below C-level", 
+                           Yes = "C-level"),
+         gender = recode(gender,
+                         Female = "Women",
+                         Male = "Men")) %>% 
+  ggplot(aes(paste(isClevel, gender, sep = "\n"), Extraversion, color = gender)) +
+  geom_boxplot() +
+  geom_jitter(height = .2) +
+  scale_color_manual(values = c("#1b9e77", "#7570b3")) +
+  ggtitle("Extraversion Stan Scores") +
+  scale_y_continuous(breaks = 1:9) +
+  ggthemes::theme_fivethirtyeight() 
+  
+clevel_plot
+
+# Then saved as:
+dir.create(here::here("output", "figures"), recursive =TRUE)
+
+ggsave(here::here("output", "figures", "clevel_extraversion_svg.svg"), clevel_plot)
+
+# To save some other formats, add ".~format~" to your file name:
+# ggsave(here::here("data", "s008_data", "output", "figures", "clevel_extraversion_eps.eps"), clevel_plot)
+ggsave(here::here("output", "figures", "clevel_extraversion_pdf.pdf"), clevel_plot)
+ggsave(here::here("output", "figures", "clevel_extraversion_tiff.tiff"), clevel_plot)
+ggsave(here::here("output", "figures", "clevel_extraversion_png.png"), clevel_plot)
+```
+
+

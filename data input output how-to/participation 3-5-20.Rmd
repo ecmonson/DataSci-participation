@@ -1,0 +1,59 @@
+---
+title: "Participation 3-5-20"
+output: 
+  html_document:
+    keep_md: true
+    theme: paper
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# Commands covered in this file:
+
+# readr::read_csv()
+
+# For mirosoft excel spreadsheets:
+# readxl::read_excell()
+
+# For google spreadsheets:
+# googlesheets4::read_sheet()
+
+# Package for importing SPSS, SAS, Stata files
+# haven
+
+# rio::import()
+# here::here()
+```
+
+```{r}
+library(tidyverse)
+library(gapminder)
+```
+
+```{r}
+(gap_asia_2007 <- gapminder %>% filter(year == 2007, continent == "Asia"))
+```
+
+```{r}
+write_csv(gap_asia_2007, "exported_file.csv")
+```
+
+```{r}
+# To check the location of the working directory for R you can utilize the following function:
+getwd()
+
+# A dated way of setting one's working directory is:
+# setwd("C:/Users/ecmrj/Documents/GitHub/DataSci-participation/data input output")
+
+# This formatting is far to finicky and far too sepcific. What we need is a way of setting a relative pathway. Do not use setwd()! You should always write your R scripts so that the entire project is self-contained in a folder. All of the scripts, folders, data, output, etc. should all “live” within this project folder.
+
+# Relative pathway creation:
+file.path("DataSci-participation", "data input output")
+
+```
+
+
+

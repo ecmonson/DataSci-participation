@@ -183,6 +183,7 @@ flights %>%
   left_join(weather, by = c("year", "month", "day", "origin", "hour", "time_hour")) %>% 
   left_join(planes, by = "tailnum") %>% 
   left_join(airports, c("dest" = "faa")) %>% 
-  left_join(airlines, b = c("carrier" = "name"))
+  left_join(airlines, b = c("carrier" = "name")) %>% 
+  select(flights, everything())
 ```
 
