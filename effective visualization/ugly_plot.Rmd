@@ -1,0 +1,32 @@
+---
+title: "participation_3-12-20"
+output: 
+  html_document:
+    keep_md: true
+    theme: paper
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library("tidyverse")
+
+ggplot(airquality, aes(`Month`, `Temp`, group = `Month`)) +
+    geom_boxplot() +
+    geom_jitter(colour = "red", alpha = .04) +
+    labs(x = "",
+         y = "",
+         title="Maximum temperature") + 
+    annotate("text", x = 4.08, y = 95, label="°F", size = 1.5) +
+    coord_cartesian(xlim = c(4.5, 9.5),
+                    clip = 'off') +
+    theme(panel.grid.minor = element_line(colour = "yellow"),
+          panel.background = element_rect(colour = "black"), 
+          axis.line = element_line(colour = "red"),
+          panel.border = element_blank(),
+          text = element_text(size=18)
+          )
+```
+
